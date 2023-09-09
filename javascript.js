@@ -1,34 +1,72 @@
 let result = document.querySelector('#result');
+const buttons = document.querySelector('#buttons');
+let firstNum =0;
+let operator = 0;
+let secondNum = 0;
+let displayValue =0;
+let calculationResult=0;
 
-const plusButton = document.querySelector('#plus');
-const minusButton = document.querySelector('#minus');
-const timesButton = document.querySelector('#times');
-const divideButton = document.querySelector('#divide');
-const equalsButton = document.querySelector('#equals');
-const clearButton = document.querySelector('#clear');
-const backButton = document.querySelector('#back');
-const dotButton = document.querySelector('#dot');
+buttons.addEventListener('click', (e) => {
+        
+        displayValue=e.target.innerText;
+        displayResult();
 
-const oneButton = document.querySelector('#one');
-const twoButton = document.querySelector('#two');
-const threeButton = document.querySelector('#three');
-const fourButton = document.querySelector('#four');
-const fiveButton = document.querySelector('#five');
-const sixButton = document.querySelector('#six');
-const sevenButton = document.querySelector('#seven');
-const eightButton = document.querySelector('#eight');
-const nineButton = document.querySelector('#nine');
+        if(firstNum==0) {
+            firstNum = e.target.innerText;
+            console.log(firstNum)
+        } else if(operator==0) {
+            operator = e.target.innerText;
+        } else if(secondNum==0) {
+            secondNum = e.target.innerText;
+        } 
 
-let firstNum ="";
-let operand = "";
-let secondNum = "";
 
-function operate(first,operand,second) {
-    
+
+
+        console.log(firstNum + " "+ operator+ " " + secondNum);
+
+        if(e.target.innerText=="=") {
+            operate(firstNum,operator,secondNum);
+            displayResult();
+            firstNum = calculationResult;
+            operator=0;
+            secondNum=0;
+        }
+
+        if(e.target.innerText=="clear") {
+            displayValue=""
+            displayResult();
+        }
+});
+
+
+function operate(first,operator,second) {
+    switch(operator) {
+        case "-":
+            calculationResult = minus(first,second);
+            displayValue = calculationResult;
+            displayResult();
+            break;
+        case "+":
+            calculationResult = sum(first,second);
+            displayValue = calculationResult;
+            displayResult();
+            break;
+        case "*":
+            calculationResult = multiply(first,second);
+            displayValue = calculationResult;
+            displayResult();
+            break;
+        case "/":
+            calculationResult = divide(first,second);
+            displayValue = calculationResult;
+            displayResult();
+            break;
+    }
 }
 
-function displayResult(res) {
-    result.textContent = res;
+function displayResult() {
+    result.textContent = displayValue;
 }
 
 function sum(...numbers) {
@@ -50,8 +88,6 @@ function multiply(...numbers) {
 }
 
 function divide(...numbers) {
-    
     let total = numbers.reduce((acc,curr) => acc = acc/curr);
     return total;
 }
-

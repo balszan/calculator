@@ -18,10 +18,6 @@
     padding: 20px 40px;
 }
 
-.button {
-    background: #732412;
-}
-
 #buttons {
     background: #D99A4E;
     margin-top: 10px;
@@ -35,4 +31,5 @@
     margin: 4px 2px;
     border-radius: 8px;
     border:none;
+    background: #732412;
 }
