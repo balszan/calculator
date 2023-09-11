@@ -69,16 +69,15 @@ function displayResult() {
     result.textContent = displayValue;
 }
 
-function sum(...numbers) {
-
-    let total = numbers.reduce((acc,curr) => acc = acc+curr,0)
-    return total;
+function sum(first, second) {
+    sumResult = parseInt(first)+parseInt(second);
+    return sumResult;
+    
 }
 
-function minus(num,...numbers) {
-   
-    let total = numbers.reduce((acc, curr) => acc = acc-curr, num)
-    return total;
+function minus(first, second) {
+    minusResult = parseInt(first)-parseInt(second);
+    return minusResult;
 }
 
 function multiply(...numbers) {
