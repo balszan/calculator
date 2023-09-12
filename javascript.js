@@ -1,92 +1,112 @@
-let result = document.querySelector('#result');
-const buttons = document.querySelector('#buttons');
-let firstNum =0;
-let operator = 0;
-let secondNum = 0;
-let displayValue =0;
-let calculationResult=0;
+const result = document.querySelector('#result');
+const numberButtons = document.querySelectorAll('[data-number]');
+const operationButtons = document.querySelectorAll('[data-operation]');
+const equalsButton = document.querySelector('[data-equals]');
+const clearButton = document.querySelector('[data-clear]');
+const deleteButton = document.querySelector('[data-delete]');
 
-buttons.addEventListener('click', (e) => {
-        
-        displayValue=e.target.innerText;
-        displayResult();
-
-        if(firstNum==0) {
-            firstNum = e.target.innerText;
-            console.log(firstNum)
-        } else if(operator==0) {
-            operator = e.target.innerText;
-        } else if(secondNum==0) {
-            secondNum = e.target.innerText;
-        } 
+let previousNumber ="";
+let currentOperation = undefined;
+let currentNumber = "";
 
 
+function clear() {
+    previousNumber = "";
+    currentNumber = "";
+    operation = undefined;
+    result.innerText = "";
+}
 
+function back() {
+    currentNumber = currentNumber.toString().slice(0,-1);
+}
 
-        console.log(firstNum + " "+ operator+ " " + secondNum);
+function appendNumber(number) {
+    currentNumber = currentNumber.toString() + number.toString();
+}
 
-        if(e.target.innerText=="=") {
-            operate(firstNum,operator,secondNum);
-            displayResult();
-            firstNum = calculationResult;
-            operator=0;
-            secondNum=0;
-        }
-
-        if(e.target.innerText=="clear") {
-            displayValue=""
-            displayResult();
-        }
-});
-
-
-function operate(first,operator,second) {
-    switch(operator) {
-        case "-":
-            calculationResult = minus(first,second);
-            displayValue = calculationResult;
-            displayResult();
-            break;
-        case "+":
-            calculationResult = sum(first,second);
-            displayValue = calculationResult;
-            displayResult();
-            break;
-        case "*":
-            calculationResult = multiply(first,second);
-            displayValue = calculationResult;
-            displayResult();
-            break;
-        case "/":
-            calculationResult = divide(first,second);
-            displayValue = calculationResult;
-            displayResult();
-            break;
+function chooseOperation(operation) {
+    if(currentNumber=="") return;
+    if(previousNumber!="") {
+        operate();
     }
+
+    currentOperation = operation;
+    previousNumber = currentNumber;
+    currentNumber = ""; 
+
 }
 
-function displayResult() {
-    result.textContent = displayValue;
+function operate() {
+
+if(isNaN(previousNumber) || isNaN(currentNumber)) return;
+
+let operateResult;
+
+switch(currentOperation) {
+    case "+": 
+        operateResult = parseInt(previousNumber) + parseInt(currentNumber);
+        break;
+    case "-":
+        operateResult = parseInt(previousNumber) - parseInt(currentNumber);
+        break;
+    case "*":
+        operateResult = previousNumber*currentNumber;
+        break;
+    case "/":
+        operateResult = previousNumber/currentNumber;
+        break;
 }
 
-function sum(first, second) {
-    sumResult = parseInt(first)+parseInt(second);
-    return sumResult;
-    
+currentNumber = operateResult;
+previousNumber ="";
+currentOperation = undefined;
+
 }
 
-function minus(first, second) {
-    minusResult = parseInt(first)-parseInt(second);
-    return minusResult;
+
+function updateDisplay() {
+
+        if(currentOperation==undefined) {
+            result.innerText = currentNumber;  
+        } else if(currentOperation && currentNumber==""){
+            result.innerText = currentOperation;
+        } else {
+            result.innerText = currentNumber;
+        }
 }
 
-function multiply(...numbers) {
-    
-    let total = numbers.reduce((acc,curr) => acc = curr*acc);
-    return total;
-}
 
-function divide(...numbers) {
-    let total = numbers.reduce((acc,curr) => acc = acc/curr);
-    return total;
-}
+
+numberButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        appendNumber(button.innerText);
+        updateDisplay();
+    })
+})
+
+
+operationButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        chooseOperation(button.innerText);
+        updateDisplay();
+    })
+})
+
+
+equalsButton.addEventListener('click', () => {
+    operate();
+    updateDisplay();
+})
+
+deleteButton.addEventListener('click', () => {
+    back();
+    updateDisplay();
+})
+
+clearButton.addEventListener('click', () => {
+    clear();
+    updateDisplay();
+})
+
+clear();

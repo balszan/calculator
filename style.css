@@ -11,16 +11,24 @@
     background: #D99A4E;
     margin: auto;
     margin-top: 50px;
+    border-radius: 8px;
+    padding-top: 15px;
 }
 
 #result {
     background: #A6785D;
-    padding: 20px 40px;
+    padding: 40px 60px;
+    font-size: 32px;
+    width: 200px;
+    height: 70px;
+    margin: auto;
+
 }
 
 #buttons {
     background: #D99A4E;
-    margin-top: 10px;
+    margin: 25px;
+    padding: 10px;
 }
 
 .button {
